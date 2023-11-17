@@ -45,32 +45,34 @@ func twoSum(nums []int, target int) []int {
 	return findTarget(nums, target, toMap(nums))
 }
 
-func findTarget(nums []int, target int, hashMap map[int][]int) []int {
-	for i, num := range nums {
-		remaining := target - num
-		values, isMatch := hashMap[remaining]
+func findTarget(nums []int, target int, dataMap map[int]int) []int {
+	currentIndex := -1
+	targetIndex := -1
+	for i := 0; i < len(nums)-1; i++ {
+		remaining := target - nums[i]
+		value, isFound := dataMap[remaining]
 
-		// no match
-		if !isMatch {
+		if !isFound {
 			continue
-		}
-		// match
-		if !(values[0] == i) {
-			return []int{i, values[0]}
-		}
-		// match, but is itself, therefore gets the next occurrence if it existed
-		if values[0] == i && len(values) > 1 {
-			return []int{i, values[1]}
+		} else {
+			// is self
+			if value == i {
+				continue
+			}
+
+			currentIndex = i
+			targetIndex = value
+			break
 		}
 	}
 
-	return []int{}
+	return []int{currentIndex, targetIndex}
 }
 
-func toMap(nums []int) map[int][]int {
-	dataMap := make(map[int][]int)
-	for i := 1; i < len(nums); i++ {
-		dataMap[nums[i]] = append(dataMap[nums[i]], i)
+func toMap(nums []int) map[int]int {
+	dataMap := make(map[int]int)
+	for i := 0; i < len(nums); i++ {
+		dataMap[nums[i]] = i
 	}
 
 	return dataMap
