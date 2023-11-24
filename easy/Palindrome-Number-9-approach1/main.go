@@ -21,27 +21,18 @@ func isPalindrome(x int) bool {
 		return true
 	}
 
-	s := toSlice(x)
-	lastIndex := len(s) - 1
-	for i := 0; i < lastIndex; i++ {
-		if s[i] != s[lastIndex] {
-			return false
-		}
-		lastIndex--
-	}
-
-	return true
+	return x == reverseNumber(x)
 }
 
-func toSlice(x int) []int {
-	var s []int
+func reverseNumber(x int) int {
+	reverse := 0
 	for {
-		s = append(s, x%10)
+		reverse = reverse*10 + x%10
 		x = x / 10
-		if x < 1 {
+		if x == 0 {
 			break
 		}
 	}
 
-	return s
+	return reverse
 }
